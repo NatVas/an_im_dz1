@@ -102,10 +102,10 @@ void my_image::Make_better() {
 
 	g_for_r();
 	g_for_b();
-	//b_and_r_for_g();
-	//r_for_having_b();
+	b_and_r_for_g();
+	r_for_having_b();
 
-	//b_for_having_r();
+	b_for_having_r();
 
 
 
@@ -208,29 +208,29 @@ void my_image::b_and_r_for_g() {
 
 void my_image::g_for_r() {
 	
-
-	for (int i = 2;i < BMP_IMAGE_HEADER.biHeight - 2;i++)
+	int flag = 0;
+	for (int i = 2;i < BMP_IMAGE_HEADER.biHeight - 2; i+=2)
 	{
-		for (int j = 2; j < BMP_IMAGE_HEADER.biWidth - 2; j++)
+		for (int j = 2; j < BMP_IMAGE_HEADER.biWidth - 2; j+=2)
 		{
-			if (BMP_MATRIX_MAP[i][j][2] != 0) {
-				
+			
+
 				unsigned char	d_n = abs(BMP_MATRIX_MAP[i][j][2] - BMP_MATRIX_MAP[i - 2][j][2]) * 2 +
-						abs(BMP_MATRIX_MAP[i - 1][j][1] - BMP_MATRIX_MAP[i + 1][j][1]);
-				
+					abs(BMP_MATRIX_MAP[i - 1][j][1] - BMP_MATRIX_MAP[i + 1][j][1]);
+
 
 				unsigned char d_s = abs(BMP_MATRIX_MAP[i][j][2] - BMP_MATRIX_MAP[i + 2][j][2]) * 2 +
 					abs(BMP_MATRIX_MAP[i - 1][j][1] - BMP_MATRIX_MAP[i + 1][j][1]);
-				
 
-			
+
+
 				unsigned char d_e = abs(BMP_MATRIX_MAP[i][j][2] - BMP_MATRIX_MAP[i][j + 2][2]) * 2 +
-						abs(BMP_MATRIX_MAP[i][j + 1][1] - BMP_MATRIX_MAP[i][j - 1][1]);
-				
+					abs(BMP_MATRIX_MAP[i][j + 1][1] - BMP_MATRIX_MAP[i][j - 1][1]);
+
 
 				unsigned char d_w = abs(BMP_MATRIX_MAP[i][j][2] - BMP_MATRIX_MAP[i][j - 2][2]) * 2 +
-						abs(BMP_MATRIX_MAP[i][j + 1][1] - BMP_MATRIX_MAP[i][j - 1][1]);
-				
+					abs(BMP_MATRIX_MAP[i][j + 1][1] - BMP_MATRIX_MAP[i][j - 1][1]);
+
 
 				if (d_n == min(min(d_n, d_s), min(d_e, d_w))) {
 					BMP_MATRIX_MAP[i][j][1] = (BMP_MATRIX_MAP[i - 1][j][1] * 3 +
@@ -250,24 +250,24 @@ void my_image::g_for_r() {
 
 				}
 
-				if (d_w == min(min(d_n, d_s), min(d_e, d_w)) ) {
+				if (d_w == min(min(d_n, d_s), min(d_e, d_w))) {
 					BMP_MATRIX_MAP[i][j][1] = (BMP_MATRIX_MAP[i][j - 1][1] * 3 +
 						BMP_MATRIX_MAP[i][j + 1][1] + BMP_MATRIX_MAP[i][j][2] - BMP_MATRIX_MAP[i][j - 2][2]) / 4;
 
 				}
-			}
+			
+			
 		}
 	}
-
 }
 
 void my_image::g_for_b() {
-
-	for (int i = 2;i < BMP_IMAGE_HEADER.biHeight - 2;i++)
+	int flag = 0;
+	for (int i = 3;i < BMP_IMAGE_HEADER.biHeight - 2;i += 2)
 	{
-		for (int j = 2; j < BMP_IMAGE_HEADER.biWidth - 2; j++)
+		for (int j = 3; j < BMP_IMAGE_HEADER.biWidth - 2; j+=2)
 		{
-			if (BMP_MATRIX_MAP[i][j][0] != 0) {
+			
 				unsigned char d_n = abs(BMP_MATRIX_MAP[i][j][0] - BMP_MATRIX_MAP[i - 2][j][0]) * 2 +
 						abs(BMP_MATRIX_MAP[i - 1][j][1] - BMP_MATRIX_MAP[i + 1][j][1]);
 				
@@ -306,7 +306,7 @@ void my_image::g_for_b() {
 						BMP_MATRIX_MAP[i][j + 1][1] + BMP_MATRIX_MAP[i][j][0] - BMP_MATRIX_MAP[i][j - 2][0]) / 4;
 
 				}
-			}
+			
 		}
 	}
 
